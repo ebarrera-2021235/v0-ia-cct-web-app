@@ -4,10 +4,25 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { Bug, Loader2, Code2 } from "lucide-react"
+import { Bug, Loader2, Code2, ChevronDown } from "lucide-react"
 import { DebugResults } from "./debug-results"
 
-const EXAMPLE_CODE = `function calcularTotal(items) {
+const LANGUAGES = [
+  { value: "javascript", label: "JavaScript", icon: "JS" },
+  { value: "typescript", label: "TypeScript", icon: "TS" },
+  { value: "python", label: "Python", icon: "PY" },
+  { value: "java", label: "Java", icon: "JV" },
+  { value: "csharp", label: "C#", icon: "C#" },
+  { value: "go", label: "Go", icon: "GO" },
+  { value: "rust", label: "Rust", icon: "RS" },
+  { value: "php", label: "PHP", icon: "PHP" },
+  { value: "ruby", label: "Ruby", icon: "RB" },
+] as const
+
+type Language = typeof LANGUAGES[number]["value"]
+
+const EXAMPLE_CODES: Record<Language, string> = {
+  javascript: `function calcularTotal(items) {
   let total = 0
   for (let i = 0; i <= items.length; i++) {
     total += items[i].precio
@@ -19,7 +34,77 @@ const resultado = calcularTotal([
   { nombre: "Producto 1", precio: 100 },
   { nombre: "Producto 2", precio: 200 }
 ])
-console.log(resultado)`
+console.log(resultado)`,
+  typescript: `interface Item {
+  nombre: string
+  precio: number
+}
+
+function calcularTotal(items: Item[]): number {
+  let total = 0
+  for (let i = 0; i <= items.length; i++) {
+    total += items[i].precio
+  }
+  return total
+}`,
+  python: `def calcular_total(items):
+    total = 0
+    for i in range(len(items) + 1):
+        total += items[i]["precio"]
+    return total
+
+resultado = calcular_total([
+    {"nombre": "Producto 1", "precio": 100},
+    {"nombre": "Producto 2", "precio": 200}
+])
+print(resultado)`,
+  java: `public class Calculator {
+    public static int calcularTotal(Item[] items) {
+        int total = 0;
+        for (int i = 0; i <= items.length; i++) {
+            total += items[i].precio;
+        }
+        return total;
+    }
+}`,
+  csharp: `public class Calculator {
+    public static int CalcularTotal(Item[] items) {
+        int total = 0;
+        for (int i = 0; i <= items.Length; i++) {
+            total += items[i].Precio;
+        }
+        return total;
+    }
+}`,
+  go: `func calcularTotal(items []Item) int {
+    total := 0
+    for i := 0; i <= len(items); i++ {
+        total += items[i].Precio
+    }
+    return total
+}`,
+  rust: `fn calcular_total(items: &Vec<Item>) -> i32 {
+    let mut total = 0;
+    for i in 0..=items.len() {
+        total += items[i].precio;
+    }
+    total
+}`,
+  php: `function calcularTotal($items) {
+    $total = 0;
+    for ($i = 0; $i <= count($items); $i++) {
+        $total += $items[$i]['precio'];
+    }
+    return $total;
+}`,
+  ruby: `def calcular_total(items)
+  total = 0
+  for i in 0..items.length
+    total += items[i][:precio]
+  end
+  total
+end`,
+}
 
 export interface DebugResult {
   error: string
@@ -29,6 +114,8 @@ export interface DebugResult {
 
 export function CodeDebugger() {
   const [code, setCode] = useState("")
+  const [language, setLanguage] = useState<Language>("javascript")
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [result, setResult] = useState<DebugResult | null>(null)
 
@@ -68,9 +155,11 @@ console.log(resultado) // Output: 300`,
   }
 
   const loadExample = () => {
-    setCode(EXAMPLE_CODE)
+    setCode(EXAMPLE_CODES[language])
     setResult(null)
   }
+
+  const selectedLanguage = LANGUAGES.find(l => l.value === language)
 
   return (
     <section id="debug" className="scroll-mt-24">
@@ -104,16 +193,74 @@ console.log(resultado) // Output: 300`,
                 </p>
               </div>
             </div>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={loadExample} 
-                className="hidden border-orange-500/20 bg-transparent text-muted-foreground hover:border-orange-500/50 hover:bg-orange-500/10 hover:text-orange-500 sm:flex"
-              >
-                Cargar ejemplo
-              </Button>
-            </motion.div>
+            <div className="flex items-center gap-3">
+              {/* Selector de lenguaje */}
+              <div className="relative">
+                <motion.button
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className="flex items-center gap-2 rounded-xl border border-orange-500/20 bg-secondary/50 px-4 py-2 text-sm font-medium text-foreground transition-all hover:border-orange-500/50 hover:bg-orange-500/10"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <span className="flex h-6 w-6 items-center justify-center rounded-md bg-orange-500/20 text-xs font-bold text-orange-500">
+                    {selectedLanguage?.icon}
+                  </span>
+                  <span className="hidden sm:inline">{selectedLanguage?.label}</span>
+                  <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${isDropdownOpen ? "rotate-180" : ""}`} />
+                </motion.button>
+
+                <AnimatePresence>
+                  {isDropdownOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute right-0 top-full z-50 mt-2 w-48 overflow-hidden rounded-xl border border-orange-500/20 bg-card shadow-xl shadow-black/50"
+                    >
+                      <div className="max-h-64 overflow-y-auto p-1">
+                        {LANGUAGES.map((lang) => (
+                          <motion.button
+                            key={lang.value}
+                            onClick={() => {
+                              setLanguage(lang.value)
+                              setIsDropdownOpen(false)
+                              setResult(null)
+                            }}
+                            className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm transition-all ${
+                              language === lang.value
+                                ? "bg-orange-500/20 text-orange-500"
+                                : "text-foreground hover:bg-orange-500/10"
+                            }`}
+                            whileHover={{ x: 4 }}
+                          >
+                            <span className={`flex h-7 w-7 items-center justify-center rounded-md text-xs font-bold ${
+                              language === lang.value 
+                                ? "bg-orange-500 text-white" 
+                                : "bg-secondary text-muted-foreground"
+                            }`}>
+                              {lang.icon}
+                            </span>
+                            {lang.label}
+                          </motion.button>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={loadExample} 
+                  className="hidden border-orange-500/20 bg-transparent text-muted-foreground hover:border-orange-500/50 hover:bg-orange-500/10 hover:text-orange-500 sm:flex"
+                >
+                  Cargar ejemplo
+                </Button>
+              </motion.div>
+            </div>
           </div>
         </CardHeader>
         <CardContent className="space-y-6 p-6">
@@ -149,8 +296,13 @@ console.log(resultado) // Output: 300`,
                 className="min-h-[240px] w-full resize-none rounded-2xl border border-orange-500/20 bg-background p-6 font-mono text-sm leading-relaxed text-foreground placeholder:text-muted-foreground focus:border-orange-500/50 focus:outline-none focus:ring-2 focus:ring-orange-500/20"
                 spellCheck={false}
               />
-              <div className="absolute right-4 top-4 rounded-lg bg-secondary/80 p-2 ring-1 ring-orange-500/20">
-                <Code2 className="h-4 w-4 text-orange-500/50" />
+              <div className="absolute right-4 top-4 flex items-center gap-2">
+                <span className="rounded-lg bg-orange-500/20 px-2 py-1 text-xs font-bold text-orange-500">
+                  {selectedLanguage?.label}
+                </span>
+                <div className="rounded-lg bg-secondary/80 p-2 ring-1 ring-orange-500/20">
+                  <Code2 className="h-4 w-4 text-orange-500/50" />
+                </div>
               </div>
             </div>
             <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}>
