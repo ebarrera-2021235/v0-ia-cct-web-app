@@ -4,73 +4,73 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: #0a0a0f;
-  --foreground: #f5f5f7;
-  --card: #121218;
-  --card-foreground: #f5f5f7;
-  --popover: #121218;
-  --popover-foreground: #f5f5f7;
+  --background: #050507;
+  --foreground: #fafafa;
+  --card: #0c0c10;
+  --card-foreground: #fafafa;
+  --popover: #0c0c10;
+  --popover-foreground: #fafafa;
   --primary: #f97316;
   --primary-foreground: #ffffff;
-  --secondary: #1c1c24;
-  --secondary-foreground: #e5e5e9;
-  --muted: #27272f;
-  --muted-foreground: #9191a0;
+  --secondary: #18181b;
+  --secondary-foreground: #fafafa;
+  --muted: #27272a;
+  --muted-foreground: #a1a1aa;
   --accent: #f97316;
   --accent-foreground: #ffffff;
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  --border: #2a2a35;
-  --input: #16161c;
+  --border: #27272a;
+  --input: #0c0c10;
   --ring: #f97316;
   --chart-1: #f97316;
   --chart-2: #fb923c;
   --chart-3: #fdba74;
   --chart-4: #ea580c;
   --chart-5: #c2410c;
-  --radius: 0.625rem;
-  --sidebar: #0f0f14;
-  --sidebar-foreground: #f5f5f7;
+  --radius: 0.75rem;
+  --sidebar: #0c0c10;
+  --sidebar-foreground: #fafafa;
   --sidebar-primary: #f97316;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #1c1c24;
-  --sidebar-accent-foreground: #f5f5f7;
-  --sidebar-border: #2a2a35;
+  --sidebar-accent: #18181b;
+  --sidebar-accent-foreground: #fafafa;
+  --sidebar-border: #27272a;
   --sidebar-ring: #f97316;
 }
 
 .dark {
-  --background: #0a0a0f;
-  --foreground: #f5f5f7;
-  --card: #121218;
-  --card-foreground: #f5f5f7;
-  --popover: #121218;
-  --popover-foreground: #f5f5f7;
+  --background: #050507;
+  --foreground: #fafafa;
+  --card: #0c0c10;
+  --card-foreground: #fafafa;
+  --popover: #0c0c10;
+  --popover-foreground: #fafafa;
   --primary: #f97316;
   --primary-foreground: #ffffff;
-  --secondary: #1c1c24;
-  --secondary-foreground: #e5e5e9;
-  --muted: #27272f;
-  --muted-foreground: #9191a0;
+  --secondary: #18181b;
+  --secondary-foreground: #fafafa;
+  --muted: #27272a;
+  --muted-foreground: #a1a1aa;
   --accent: #f97316;
   --accent-foreground: #ffffff;
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  --border: #2a2a35;
-  --input: #16161c;
+  --border: #27272a;
+  --input: #0c0c10;
   --ring: #f97316;
   --chart-1: #f97316;
   --chart-2: #fb923c;
   --chart-3: #fdba74;
   --chart-4: #ea580c;
   --chart-5: #c2410c;
-  --sidebar: #0f0f14;
-  --sidebar-foreground: #f5f5f7;
+  --sidebar: #0c0c10;
+  --sidebar-foreground: #fafafa;
   --sidebar-primary: #f97316;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #1c1c24;
-  --sidebar-accent-foreground: #f5f5f7;
-  --sidebar-border: #2a2a35;
+  --sidebar-accent: #18181b;
+  --sidebar-accent-foreground: #fafafa;
+  --sidebar-border: #27272a;
   --sidebar-ring: #f97316;
 }
 
@@ -124,13 +124,22 @@
   }
 }
 
-/* Efecto de texto brillante animado */
+/* Efecto de texto brillante animado - estilo cursorguatemala */
 @keyframes shine {
   0% {
-    background-position: -200% center;
+    background-position: 200% center;
   }
   100% {
-    background-position: 200% center;
+    background-position: -200% center;
+  }
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    text-shadow: 0 0 20px rgba(249, 115, 22, 0.5), 0 0 40px rgba(249, 115, 22, 0.3);
+  }
+  50% {
+    text-shadow: 0 0 30px rgba(249, 115, 22, 0.8), 0 0 60px rgba(249, 115, 22, 0.5);
   }
 }
 
@@ -138,30 +147,55 @@
   background: linear-gradient(
     90deg,
     #f97316 0%,
-    #fdba74 25%,
+    #f97316 40%,
     #ffffff 50%,
-    #fdba74 75%,
+    #f97316 60%,
     #f97316 100%
   );
   background-size: 200% auto;
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: shine 3s linear infinite;
+  animation: shine 2s linear infinite;
 }
 
-.text-shine-slow {
-  background: linear-gradient(
-    90deg,
-    #f97316 0%,
-    #fdba74 25%,
-    #ffffff 50%,
-    #fdba74 75%,
-    #f97316 100%
-  );
-  background-size: 200% auto;
+.text-glow {
+  color: #f97316;
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #f97316 0%, #fb923c 50%, #fdba74 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: shine 4s linear infinite;
+}
+
+/* Efecto de borde brillante */
+@keyframes border-glow {
+  0%, 100% {
+    border-color: rgba(249, 115, 22, 0.3);
+    box-shadow: 0 0 15px rgba(249, 115, 22, 0.1);
+  }
+  50% {
+    border-color: rgba(249, 115, 22, 0.6);
+    box-shadow: 0 0 25px rgba(249, 115, 22, 0.2);
+  }
+}
+
+.border-glow {
+  animation: border-glow 3s ease-in-out infinite;
+}
+
+/* Fondo con grid sutil */
+.bg-grid {
+  background-image: 
+    linear-gradient(rgba(249, 115, 22, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(249, 115, 22, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* Gradiente radial */
+.bg-radial-orange {
+  background: radial-gradient(ellipse at top, rgba(249, 115, 22, 0.15) 0%, transparent 50%);
 }

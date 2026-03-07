@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { GitBranch, Loader2, FolderGit2, Search } from "lucide-react"
 import { AnalysisResults } from "./analysis-results"
@@ -34,24 +34,24 @@ export function RepositoryAnalyzer() {
       issues: [
         {
           type: "error",
-          message: "Vulnerabilidad crítica en dependencia",
+          message: "Vulnerabilidad critica en dependencia",
           details: "lodash@4.17.19 tiene una vulnerabilidad de prototype pollution. Actualizar a 4.17.21+",
         },
         {
           type: "warning",
           message: "Dependencias desactualizadas",
-          details: "3 paquetes requieren actualización: react-dom, next, eslint",
+          details: "3 paquetes requieren actualizacion: react-dom, next, eslint",
         },
         {
           type: "info",
           message: "Archivos sin usar detectados",
-          details: "Se encontraron 2 componentes que no se importan en ningún lugar del proyecto",
+          details: "Se encontraron 2 componentes que no se importan en ningun lugar del proyecto",
         },
       ],
       recommendations: [
         "Implementar tests unitarios - Cobertura actual: 0%",
-        "Agregar documentación README más detallada",
-        "Configurar ESLint con reglas más estrictas",
+        "Agregar documentacion README mas detallada",
+        "Configurar ESLint con reglas mas estrictas",
         "Considerar migrar a Biome para mejor rendimiento",
       ],
     })
@@ -61,22 +61,32 @@ export function RepositoryAnalyzer() {
 
   return (
     <section id="analizador" className="scroll-mt-24">
-      <Card className="overflow-hidden border-border bg-card/60 backdrop-blur-sm">
-        <CardHeader className="border-b border-border bg-card/80 pb-6">
+      <Card className="overflow-hidden border-orange-500/10 bg-card/80 backdrop-blur-sm">
+        <CardHeader className="border-b border-orange-500/10 bg-card/50 p-6">
           <div className="flex items-center gap-4">
             <motion.div 
-              className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500/20 to-orange-600/10 ring-1 ring-orange-500/30"
+              className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-500/20 to-orange-600/10 ring-1 ring-orange-500/30"
               whileHover={{ scale: 1.1, rotate: 5 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              animate={{ 
+                boxShadow: [
+                  "0 0 15px rgba(249, 115, 22, 0.1)",
+                  "0 0 25px rgba(249, 115, 22, 0.2)",
+                  "0 0 15px rgba(249, 115, 22, 0.1)"
+                ]
+              }}
+              transition={{ 
+                boxShadow: { duration: 2, repeat: Infinity, ease: "easeInOut" },
+                scale: { type: "spring", stiffness: 400, damping: 10 }
+              }}
             >
-              <FolderGit2 className="h-6 w-6 text-orange-500" />
+              <FolderGit2 className="h-7 w-7 text-orange-500" />
             </motion.div>
             <div>
-              <CardTitle className="text-xl font-semibold text-card-foreground">
-                <span className="text-shine-slow">Analizador</span> de Repositorios
-              </CardTitle>
+              <h3 className="text-2xl font-bold text-foreground">
+                <span className="text-gradient">Analizador</span> de Repositorios
+              </h3>
               <p className="mt-1 text-sm text-muted-foreground">
-                Analiza tu repositorio de GitHub y detecta problemas automáticamente
+                Analiza tu repositorio de GitHub y detecta problemas automaticamente
               </p>
             </div>
           </div>
@@ -89,7 +99,7 @@ export function RepositoryAnalyzer() {
                 placeholder="https://github.com/usuario/repositorio"
                 value={repoUrl}
                 onChange={(e) => setRepoUrl(e.target.value)}
-                className="h-12 border-border bg-input pl-12 text-base text-foreground placeholder:text-muted-foreground focus:border-orange-500/50 focus:ring-2 focus:ring-orange-500/30"
+                className="h-14 border-orange-500/20 bg-background pl-12 text-base text-foreground placeholder:text-muted-foreground focus:border-orange-500/50 focus:ring-2 focus:ring-orange-500/20"
               />
             </div>
             <motion.div 
@@ -99,7 +109,7 @@ export function RepositoryAnalyzer() {
               <Button 
                 onClick={handleAnalyze} 
                 disabled={isAnalyzing || !repoUrl.trim()} 
-                className="h-12 gap-2 bg-gradient-to-r from-orange-500 to-orange-600 px-6 text-base font-medium text-white shadow-lg shadow-orange-500/30 hover:from-orange-600 hover:to-orange-700 hover:shadow-orange-500/40 disabled:opacity-50"
+                className="h-14 gap-2 bg-gradient-to-r from-orange-500 to-orange-600 px-8 text-base font-semibold text-white shadow-lg shadow-orange-500/25 transition-all hover:shadow-orange-500/40 disabled:opacity-50"
               >
                 {isAnalyzing ? (
                   <>
@@ -122,19 +132,19 @@ export function RepositoryAnalyzer() {
 
           {!isAnalyzing && !results && (
             <motion.div 
-              className="rounded-xl border-2 border-dashed border-border bg-secondary/30 p-12 text-center"
+              className="rounded-2xl border border-dashed border-orange-500/20 bg-orange-500/5 p-16 text-center"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4 }}
+              transition={{ duration: 0.5 }}
             >
               <motion.div
-                animate={{ y: [0, -5, 0] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
               >
-                <FolderGit2 className="mx-auto h-16 w-16 text-muted-foreground/30" />
+                <FolderGit2 className="mx-auto h-20 w-20 text-orange-500/20" />
               </motion.div>
-              <p className="mt-6 text-muted-foreground">
-                Ingresa la URL de un repositorio de GitHub para comenzar el análisis
+              <p className="mt-6 text-lg text-muted-foreground">
+                Ingresa la URL de un repositorio de GitHub para comenzar
               </p>
             </motion.div>
           )}
