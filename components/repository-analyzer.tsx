@@ -73,7 +73,7 @@ export function RepositoryAnalyzer() {
             </motion.div>
             <div>
               <CardTitle className="text-xl font-semibold text-card-foreground">
-                Analizador de Repositorios
+                <span className="text-shine-slow">Analizador</span> de Repositorios
               </CardTitle>
               <p className="mt-1 text-sm text-muted-foreground">
                 Analiza tu repositorio de GitHub y detecta problemas automáticamente

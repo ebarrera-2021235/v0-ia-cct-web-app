@@ -5,7 +5,7 @@ import { Header } from "@/components/header"
 import { RepositoryAnalyzer } from "@/components/repository-analyzer"
 import { CodeDebugger } from "@/components/code-debugger"
 import { AIChat } from "@/components/ai-chat"
-import { Telescope, Zap, Shield, Code2 } from "lucide-react"
+import { Sparkles, Zap, Shield, Code2 } from "lucide-react"
 
 const features = [
   {
@@ -36,11 +36,20 @@ const containerVariants = {
 }
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 40 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: "easeOut" },
+    transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] },
+  },
+}
+
+const sectionVariants = {
+  hidden: { opacity: 0, y: 60 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] },
   },
 }
 
@@ -61,7 +70,7 @@ export default function Home() {
             className="mb-8 inline-flex items-center gap-2 rounded-full border border-orange-500/30 bg-orange-500/10 px-5 py-2.5"
             variants={itemVariants}
           >
-            <Telescope className="h-5 w-5 text-orange-500" />
+            <Sparkles className="h-5 w-5 text-orange-500" />
             <span className="text-sm font-medium text-orange-500">Potenciado por IA</span>
           </motion.div>
           
@@ -70,7 +79,7 @@ export default function Home() {
             variants={itemVariants}
           >
             Analiza y mejora tu código con
-            <span className="block bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent">
+            <span className="block text-shine text-5xl sm:text-6xl lg:text-7xl">
               Inteligencia Artificial
             </span>
           </motion.h2>
@@ -79,7 +88,7 @@ export default function Home() {
             className="mx-auto max-w-2xl text-pretty text-lg leading-relaxed text-muted-foreground"
             variants={itemVariants}
           >
-            DevScope AI te ayuda a detectar errores, analizar repositorios de GitHub y obtener 
+            AI-CCT te ayuda a detectar errores, analizar repositorios de GitHub y obtener 
             sugerencias inteligentes para mejorar la calidad de tu código.
           </motion.p>
 
@@ -88,7 +97,7 @@ export default function Home() {
             className="mt-16 grid gap-6 sm:grid-cols-3"
             variants={containerVariants}
           >
-            {features.map((feature, index) => (
+            {features.map((feature) => (
               <motion.div 
                 key={feature.title}
                 className="group rounded-2xl border border-border bg-card/60 p-8 backdrop-blur-sm transition-all duration-300 hover:border-orange-500/40 hover:bg-card/90"
@@ -110,28 +119,41 @@ export default function Home() {
           </motion.div>
         </motion.section>
 
-        {/* Main Tools */}
-        <motion.div 
-          className="grid gap-8 xl:grid-cols-2"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={containerVariants}
-        >
-          <motion.div className="space-y-8" variants={itemVariants}>
-            <RepositoryAnalyzer />
-            <AIChat />
-          </motion.div>
-          <motion.div variants={itemVariants}>
+        {/* Main Tools - Animaciones basadas en scroll */}
+        <div className="grid gap-8 xl:grid-cols-2">
+          <div className="space-y-8">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={sectionVariants}
+            >
+              <RepositoryAnalyzer />
+            </motion.div>
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={sectionVariants}
+            >
+              <AIChat />
+            </motion.div>
+          </div>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={sectionVariants}
+          >
             <CodeDebugger />
           </motion.div>
-        </motion.div>
+        </div>
 
         {/* Footer */}
         <motion.footer 
           className="mt-24 border-t border-border pt-12 text-center"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
@@ -140,17 +162,17 @@ export default function Home() {
             whileHover={{ scale: 1.05 }}
           >
             <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 shadow-lg shadow-orange-500/25">
-              <Telescope className="h-5 w-5 text-white" />
+              <Sparkles className="h-5 w-5 text-white" />
             </div>
             <span className="text-xl font-bold text-foreground">
-              DevScope <span className="text-orange-500">AI</span>
+              AI-<span className="text-shine">CCT</span>
             </span>
           </motion.div>
           <p className="mt-5 text-sm text-muted-foreground">
             Herramienta de análisis de código con Inteligencia Artificial para desarrolladores
           </p>
           <p className="mt-3 text-xs text-muted-foreground/70">
-            2026 DevScope AI. Todos los derechos reservados.
+            2026 AI-CCT. Todos los derechos reservados.
           </p>
         </motion.footer>
       </main>

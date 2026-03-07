@@ -18,7 +18,7 @@ const INITIAL_MESSAGES: Message[] = [
     id: "welcome",
     role: "assistant",
     content:
-      "¡Hola! Soy el asistente de DevScope AI. Puedo ayudarte con dudas sobre programación, revisión de código, mejores prácticas y más. ¿En qué puedo ayudarte hoy?",
+      "¡Hola! Soy el asistente de AI-CCT. Puedo ayudarte con dudas sobre programación, revisión de código, mejores prácticas y más. ¿En qué puedo ayudarte hoy?",
   },
 ]
 
@@ -90,7 +90,7 @@ export function AIChat() {
             </motion.div>
             <div>
               <CardTitle className="text-xl font-semibold text-card-foreground">
-                Chat con IA
+                <span className="text-shine-slow">Chat</span> con IA
               </CardTitle>
               <p className="mt-1 text-sm text-muted-foreground">
                 Pregúntale a la IA sobre programación y mejores prácticas
@@ -106,9 +106,9 @@ export function AIChat() {
                 {messages.map((message) => (
                   <motion.div
                     key={message.id}
-                    initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                    initial={{ opacity: 0, y: 20, scale: 0.9 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ duration: 0.4, ease: "easeOut" }}
+                    transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
                     className={`flex gap-4 ${message.role === "user" ? "flex-row-reverse" : ""}`}
                   >
                     <motion.div
@@ -125,7 +125,10 @@ export function AIChat() {
                         <Bot className="h-5 w-5 text-white" />
                       )}
                     </motion.div>
-                    <div
+                    <motion.div
+                      initial={{ opacity: 0, x: message.role === "user" ? 20 : -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.4, delay: 0.1 }}
                       className={`max-w-[80%] rounded-2xl px-5 py-3 ${
                         message.role === "user"
                           ? "bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/25"
@@ -133,16 +136,16 @@ export function AIChat() {
                       }`}
                     >
                       <p className="text-sm leading-relaxed">{message.content}</p>
-                    </div>
+                    </motion.div>
                   </motion.div>
                 ))}
               </AnimatePresence>
               {isLoading && (
                 <motion.div 
                   className="flex gap-4"
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
+                  initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ duration: 0.4 }}
                 >
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 shadow-lg shadow-orange-500/25">
                     <Bot className="h-5 w-5 text-white" />
@@ -201,7 +204,7 @@ export function AIChat() {
           </div>
 
           <p className="text-center text-xs text-muted-foreground">
-            DevScope AI puede cometer errores. Verifica siempre la información importante.
+            AI-CCT puede cometer errores. Verifica siempre la información importante.
           </p>
         </CardContent>
       </Card>

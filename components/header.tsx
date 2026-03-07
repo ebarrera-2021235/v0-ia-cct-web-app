@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Telescope, Github, Menu, X } from "lucide-react"
+import { Sparkles, Github, Menu, X } from "lucide-react"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 
@@ -22,11 +22,11 @@ export function Header() {
             whileHover={{ scale: 1.05, rotate: 5 }}
             transition={{ type: "spring", stiffness: 400, damping: 10 }}
           >
-            <Telescope className="h-6 w-6 text-white" />
+            <Sparkles className="h-6 w-6 text-white" />
           </motion.div>
           <div>
             <h1 className="text-2xl font-bold tracking-tight text-foreground">
-              DevScope <span className="text-orange-500">AI</span>
+              AI-<span className="text-shine">CCT</span>
             </h1>
             <p className="hidden text-sm text-muted-foreground md:block">
               Analiza y mejora tu código con Inteligencia Artificial

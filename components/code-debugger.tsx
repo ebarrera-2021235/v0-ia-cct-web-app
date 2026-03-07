@@ -87,7 +87,7 @@ console.log(resultado) // Output: 300`,
               </motion.div>
               <div>
                 <CardTitle className="text-xl font-semibold text-card-foreground">
-                  Debug de Código
+                  <span className="text-shine-slow">Debug</span> de Código
                 </CardTitle>
                 <p className="mt-1 text-sm text-muted-foreground">
                   La IA detectará errores y te dará la solución
