@@ -48,10 +48,10 @@ export function DebugResults({ result }: DebugResultsProps) {
       >
         <div className="flex items-start gap-4">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-red-500/20">
-            <Bug className="h-5 w-5 text-red-400" />
+            <Bug className="h-5 w-5 text-red-500" />
           </div>
           <div>
-            <h4 className="font-semibold text-red-400">Error Detectado</h4>
+            <h4 className="font-semibold text-red-500">Error Detectado</h4>
             <p className="mt-2 text-sm leading-relaxed text-foreground">{result.error}</p>
           </div>
         </div>
@@ -64,10 +64,10 @@ export function DebugResults({ result }: DebugResultsProps) {
       >
         <div className="flex items-start gap-4">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-amber-500/20">
-            <Lightbulb className="h-5 w-5 text-amber-400" />
+            <Lightbulb className="h-5 w-5 text-amber-500" />
           </div>
           <div>
-            <h4 className="font-semibold text-amber-400">Explicación del Problema</h4>
+            <h4 className="font-semibold text-amber-500">Explicación del Problema</h4>
             <p className="mt-2 text-sm leading-relaxed text-foreground">{result.explanation}</p>
           </div>
         </div>
@@ -76,26 +76,26 @@ export function DebugResults({ result }: DebugResultsProps) {
       {/* Código corregido */}
       <motion.div 
         variants={itemVariants}
-        className="rounded-xl border border-primary/30 bg-gradient-to-br from-primary/15 to-primary/5 p-5"
+        className="rounded-xl border border-orange-500/30 bg-gradient-to-br from-orange-500/15 to-orange-500/5 p-5"
       >
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/20">
-              <CheckCircle2 className="h-5 w-5 text-primary" />
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-orange-500/20">
+              <CheckCircle2 className="h-5 w-5 text-orange-500" />
             </div>
-            <h4 className="font-semibold text-primary">Código Corregido</h4>
+            <h4 className="font-semibold text-orange-500">Código Corregido</h4>
           </div>
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button 
               variant="ghost" 
               size="sm" 
               onClick={handleCopy} 
-              className="gap-2 text-muted-foreground hover:text-foreground"
+              className="gap-2 text-muted-foreground hover:text-orange-500"
             >
               {copied ? (
                 <>
-                  <Check className="h-4 w-4 text-primary" />
-                  <span className="text-primary">Copiado</span>
+                  <Check className="h-4 w-4 text-orange-500" />
+                  <span className="text-orange-500">Copiado</span>
                 </>
               ) : (
                 <>

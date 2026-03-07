@@ -73,23 +73,17 @@ console.log(resultado) // Output: 300`,
   }
 
   return (
-    <motion.section 
-      id="debug" 
-      className="scroll-mt-24"
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
-    >
-      <Card className="h-full overflow-hidden border-border bg-card/50 backdrop-blur-sm">
+    <section id="debug" className="scroll-mt-24">
+      <Card className="h-full overflow-hidden border-border bg-card/60 backdrop-blur-sm">
         <CardHeader className="border-b border-border bg-card/80 pb-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <motion.div 
-                className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 ring-1 ring-primary/20"
-                whileHover={{ scale: 1.05 }}
+                className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500/20 to-orange-600/10 ring-1 ring-orange-500/30"
+                whileHover={{ scale: 1.1, rotate: 5 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
-                <Bug className="h-6 w-6 text-primary" />
+                <Bug className="h-6 w-6 text-orange-500" />
               </motion.div>
               <div>
                 <CardTitle className="text-xl font-semibold text-card-foreground">
@@ -105,7 +99,7 @@ console.log(resultado) // Output: 300`,
                 variant="outline" 
                 size="sm" 
                 onClick={loadExample} 
-                className="hidden border-border bg-secondary/50 hover:bg-secondary hover:text-foreground sm:flex"
+                className="hidden border-border bg-secondary/50 hover:border-orange-500/50 hover:bg-secondary hover:text-orange-500 sm:flex"
               >
                 Cargar ejemplo
               </Button>
@@ -116,7 +110,12 @@ console.log(resultado) // Output: 300`,
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <label className="text-sm font-medium text-foreground">Tu código</label>
-              <Button variant="ghost" size="sm" onClick={loadExample} className="text-muted-foreground hover:text-foreground sm:hidden">
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={loadExample} 
+                className="text-muted-foreground hover:text-orange-500 sm:hidden"
+              >
                 Cargar ejemplo
               </Button>
             </div>
@@ -125,7 +124,7 @@ console.log(resultado) // Output: 300`,
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
                 placeholder="// Pega tu código aquí..."
-                className="min-h-[220px] w-full resize-none rounded-xl border border-border bg-input p-5 font-mono text-sm leading-relaxed text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
+                className="min-h-[220px] w-full resize-none rounded-xl border border-border bg-input p-5 font-mono text-sm leading-relaxed text-foreground placeholder:text-muted-foreground focus:border-orange-500/50 focus:outline-none focus:ring-2 focus:ring-orange-500/30"
                 spellCheck={false}
               />
               <div className="absolute right-4 top-4 rounded-lg bg-secondary/80 p-2">
@@ -136,7 +135,7 @@ console.log(resultado) // Output: 300`,
               <Button 
                 onClick={handleAnalyze} 
                 disabled={isAnalyzing || !code.trim()} 
-                className="w-full gap-2 bg-gradient-to-r from-primary to-primary/80 py-6 text-base font-medium shadow-lg shadow-primary/25 hover:shadow-primary/40 sm:w-auto sm:py-3"
+                className="w-full gap-2 bg-gradient-to-r from-orange-500 to-orange-600 py-6 text-base font-medium text-white shadow-lg shadow-orange-500/30 hover:from-orange-600 hover:to-orange-700 hover:shadow-orange-500/40 disabled:opacity-50 sm:w-auto sm:py-3"
               >
                 {isAnalyzing ? (
                   <>
@@ -159,19 +158,24 @@ console.log(resultado) // Output: 300`,
 
           {!isAnalyzing && !result && (
             <motion.div 
-              className="rounded-xl border-2 border-dashed border-border bg-secondary/30 p-10 text-center"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
+              className="rounded-xl border-2 border-dashed border-border bg-secondary/30 p-12 text-center"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4 }}
             >
-              <Bug className="mx-auto h-14 w-14 text-muted-foreground/40" />
-              <p className="mt-5 text-muted-foreground">
+              <motion.div
+                animate={{ y: [0, -5, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <Bug className="mx-auto h-16 w-16 text-muted-foreground/30" />
+              </motion.div>
+              <p className="mt-6 text-muted-foreground">
                 Pega tu código en el editor para que la IA lo analice
               </p>
             </motion.div>
           )}
         </CardContent>
       </Card>
-    </motion.section>
+    </section>
   )
 }

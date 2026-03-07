@@ -27,11 +27,11 @@ export function AnalysisResults({ results }: AnalysisResultsProps) {
   const getIssueIcon = (type: "error" | "warning" | "info") => {
     switch (type) {
       case "error":
-        return <AlertCircle className="h-5 w-5 text-red-400" />
+        return <AlertCircle className="h-5 w-5 text-red-500" />
       case "warning":
-        return <AlertTriangle className="h-5 w-5 text-amber-400" />
+        return <AlertTriangle className="h-5 w-5 text-amber-500" />
       case "info":
-        return <Info className="h-5 w-5 text-blue-400" />
+        return <Info className="h-5 w-5 text-blue-500" />
     }
   }
 
@@ -56,11 +56,11 @@ export function AnalysisResults({ results }: AnalysisResultsProps) {
       {/* Resumen */}
       <motion.div 
         variants={itemVariants}
-        className="rounded-xl border border-primary/30 bg-gradient-to-br from-primary/10 to-primary/5 p-5"
+        className="rounded-xl border border-orange-500/30 bg-gradient-to-br from-orange-500/10 to-orange-600/5 p-5"
       >
         <div className="flex items-start gap-4">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/20">
-            <CheckCircle2 className="h-5 w-5 text-primary" />
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-orange-500/20">
+            <CheckCircle2 className="h-5 w-5 text-orange-500" />
           </div>
           <div>
             <h4 className="font-semibold text-foreground">Resumen del Proyecto</h4>
@@ -71,8 +71,8 @@ export function AnalysisResults({ results }: AnalysisResultsProps) {
 
       {/* Tecnologías */}
       <motion.div variants={itemVariants} className="rounded-xl border border-border bg-secondary/40 p-5">
-        <div className="flex items-center gap-3 mb-4">
-          <Layers className="h-5 w-5 text-primary" />
+        <div className="mb-4 flex items-center gap-3">
+          <Layers className="h-5 w-5 text-orange-500" />
           <h4 className="font-semibold text-foreground">Tecnologías Detectadas</h4>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -82,7 +82,8 @@ export function AnalysisResults({ results }: AnalysisResultsProps) {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.3 + index * 0.05 }}
-              className="rounded-lg bg-primary/15 px-3 py-1.5 text-sm font-medium text-primary ring-1 ring-primary/30"
+              whileHover={{ scale: 1.05 }}
+              className="rounded-lg bg-orange-500/15 px-3 py-1.5 text-sm font-medium text-orange-500 ring-1 ring-orange-500/30"
             >
               {tech}
             </motion.span>
@@ -119,8 +120,8 @@ export function AnalysisResults({ results }: AnalysisResultsProps) {
 
       {/* Recomendaciones */}
       <motion.div variants={itemVariants} className="rounded-xl border border-border bg-secondary/40 p-5">
-        <div className="flex items-center gap-3 mb-4">
-          <Lightbulb className="h-5 w-5 text-amber-400" />
+        <div className="mb-4 flex items-center gap-3">
+          <Lightbulb className="h-5 w-5 text-amber-500" />
           <h4 className="font-semibold text-foreground">Recomendaciones</h4>
         </div>
         <ul className="space-y-3">
@@ -132,7 +133,7 @@ export function AnalysisResults({ results }: AnalysisResultsProps) {
               transition={{ delay: 0.5 + index * 0.08 }}
               className="flex items-start gap-3 text-sm"
             >
-              <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+              <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-orange-500" />
               <span className="text-muted-foreground">{rec}</span>
             </motion.li>
           ))}

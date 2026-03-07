@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Bot, User, Send, Loader2, Sparkles, MessageSquare } from "lucide-react"
+import { Bot, User, Send, Loader2, MessageSquare } from "lucide-react"
 
 interface Message {
   id: string
@@ -77,22 +77,16 @@ export function AIChat() {
   }
 
   return (
-    <motion.section 
-      id="chatia" 
-      className="scroll-mt-24"
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-    >
-      <Card className="overflow-hidden border-border bg-card/50 backdrop-blur-sm">
+    <section id="chatia" className="scroll-mt-24">
+      <Card className="overflow-hidden border-border bg-card/60 backdrop-blur-sm">
         <CardHeader className="border-b border-border bg-card/80 pb-6">
           <div className="flex items-center gap-4">
             <motion.div 
-              className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 ring-1 ring-primary/20"
-              whileHover={{ scale: 1.05 }}
+              className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500/20 to-orange-600/10 ring-1 ring-orange-500/30"
+              whileHover={{ scale: 1.1, rotate: 5 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
-              <MessageSquare className="h-6 w-6 text-primary" />
+              <MessageSquare className="h-6 w-6 text-orange-500" />
             </motion.div>
             <div>
               <CardTitle className="text-xl font-semibold text-card-foreground">
@@ -112,29 +106,29 @@ export function AIChat() {
                 {messages.map((message) => (
                   <motion.div
                     key={message.id}
-                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    initial={{ opacity: 0, y: 15, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ duration: 0.3, ease: "easeOut" }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
                     className={`flex gap-4 ${message.role === "user" ? "flex-row-reverse" : ""}`}
                   >
                     <motion.div
                       className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl shadow-lg ${
                         message.role === "user" 
                           ? "bg-secondary ring-1 ring-border" 
-                          : "bg-gradient-to-br from-primary to-primary/70 shadow-primary/20"
+                          : "bg-gradient-to-br from-orange-500 to-orange-600 shadow-orange-500/25"
                       }`}
                       whileHover={{ scale: 1.1 }}
                     >
                       {message.role === "user" ? (
                         <User className="h-5 w-5 text-secondary-foreground" />
                       ) : (
-                        <Bot className="h-5 w-5 text-primary-foreground" />
+                        <Bot className="h-5 w-5 text-white" />
                       )}
                     </motion.div>
                     <div
                       className={`max-w-[80%] rounded-2xl px-5 py-3 ${
                         message.role === "user"
-                          ? "bg-gradient-to-br from-primary to-primary/80 text-primary-foreground shadow-lg shadow-primary/20"
+                          ? "bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/25"
                           : "bg-secondary/80 text-secondary-foreground ring-1 ring-border"
                       }`}
                     >
@@ -146,14 +140,15 @@ export function AIChat() {
               {isLoading && (
                 <motion.div 
                   className="flex gap-4"
-                  initial={{ opacity: 0, y: 10 }}
+                  initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
                 >
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/70 shadow-lg shadow-primary/20">
-                    <Bot className="h-5 w-5 text-primary-foreground" />
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 shadow-lg shadow-orange-500/25">
+                    <Bot className="h-5 w-5 text-white" />
                   </div>
                   <div className="flex items-center gap-3 rounded-2xl bg-secondary/80 px-5 py-3 ring-1 ring-border">
-                    <Loader2 className="h-4 w-4 animate-spin text-primary" />
+                    <Loader2 className="h-4 w-4 animate-spin text-orange-500" />
                     <span className="text-sm text-muted-foreground">Escribiendo...</span>
                     <motion.div 
                       className="flex gap-1"
@@ -163,9 +158,9 @@ export function AIChat() {
                       {[0, 1, 2].map((i) => (
                         <motion.span
                           key={i}
-                          className="h-1.5 w-1.5 rounded-full bg-primary"
-                          animate={{ scale: [1, 1.3, 1] }}
-                          transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.2 }}
+                          className="h-1.5 w-1.5 rounded-full bg-orange-500"
+                          animate={{ scale: [1, 1.4, 1], opacity: [0.5, 1, 0.5] }}
+                          transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.2 }}
                         />
                       ))}
                     </motion.div>
@@ -183,15 +178,18 @@ export function AIChat() {
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder="Escribe tu pregunta sobre código..."
-              className="h-12 flex-1 bg-input text-base text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/40"
+              className="h-12 flex-1 border-border bg-input text-base text-foreground placeholder:text-muted-foreground focus:border-orange-500/50 focus:ring-2 focus:ring-orange-500/30"
               disabled={isLoading}
             />
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <motion.div 
+              whileHover={{ scale: 1.05 }} 
+              whileTap={{ scale: 0.95 }}
+            >
               <Button 
                 onClick={handleSend} 
                 disabled={isLoading || !input.trim()} 
                 size="icon" 
-                className="h-12 w-12 bg-gradient-to-r from-primary to-primary/80 shadow-lg shadow-primary/25 hover:shadow-primary/40"
+                className="h-12 w-12 bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/30 hover:from-orange-600 hover:to-orange-700 hover:shadow-orange-500/40 disabled:opacity-50"
               >
                 {isLoading ? (
                   <Loader2 className="h-5 w-5 animate-spin" />
@@ -207,6 +205,6 @@ export function AIChat() {
           </p>
         </CardContent>
       </Card>
-    </motion.section>
+    </section>
   )
 }

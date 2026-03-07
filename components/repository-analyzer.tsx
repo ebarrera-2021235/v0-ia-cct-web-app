@@ -60,22 +60,16 @@ export function RepositoryAnalyzer() {
   }
 
   return (
-    <motion.section 
-      id="analizador" 
-      className="scroll-mt-24"
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-    >
-      <Card className="overflow-hidden border-border bg-card/50 backdrop-blur-sm">
+    <section id="analizador" className="scroll-mt-24">
+      <Card className="overflow-hidden border-border bg-card/60 backdrop-blur-sm">
         <CardHeader className="border-b border-border bg-card/80 pb-6">
           <div className="flex items-center gap-4">
             <motion.div 
-              className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 ring-1 ring-primary/20"
-              whileHover={{ scale: 1.05 }}
+              className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500/20 to-orange-600/10 ring-1 ring-orange-500/30"
+              whileHover={{ scale: 1.1, rotate: 5 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
-              <FolderGit2 className="h-6 w-6 text-primary" />
+              <FolderGit2 className="h-6 w-6 text-orange-500" />
             </motion.div>
             <div>
               <CardTitle className="text-xl font-semibold text-card-foreground">
@@ -95,14 +89,17 @@ export function RepositoryAnalyzer() {
                 placeholder="https://github.com/usuario/repositorio"
                 value={repoUrl}
                 onChange={(e) => setRepoUrl(e.target.value)}
-                className="h-12 bg-input pl-12 text-base text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/30"
+                className="h-12 border-border bg-input pl-12 text-base text-foreground placeholder:text-muted-foreground focus:border-orange-500/50 focus:ring-2 focus:ring-orange-500/30"
               />
             </div>
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+            <motion.div 
+              whileHover={{ scale: 1.02 }} 
+              whileTap={{ scale: 0.98 }}
+            >
               <Button 
                 onClick={handleAnalyze} 
                 disabled={isAnalyzing || !repoUrl.trim()} 
-                className="h-12 gap-2 bg-gradient-to-r from-primary to-primary/80 px-6 text-base font-medium shadow-lg shadow-primary/25 hover:shadow-primary/40"
+                className="h-12 gap-2 bg-gradient-to-r from-orange-500 to-orange-600 px-6 text-base font-medium text-white shadow-lg shadow-orange-500/30 hover:from-orange-600 hover:to-orange-700 hover:shadow-orange-500/40 disabled:opacity-50"
               >
                 {isAnalyzing ? (
                   <>
@@ -125,19 +122,24 @@ export function RepositoryAnalyzer() {
 
           {!isAnalyzing && !results && (
             <motion.div 
-              className="rounded-xl border-2 border-dashed border-border bg-secondary/30 p-10 text-center"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
+              className="rounded-xl border-2 border-dashed border-border bg-secondary/30 p-12 text-center"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4 }}
             >
-              <FolderGit2 className="mx-auto h-14 w-14 text-muted-foreground/40" />
-              <p className="mt-5 text-muted-foreground">
+              <motion.div
+                animate={{ y: [0, -5, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <FolderGit2 className="mx-auto h-16 w-16 text-muted-foreground/30" />
+              </motion.div>
+              <p className="mt-6 text-muted-foreground">
                 Ingresa la URL de un repositorio de GitHub para comenzar el análisis
               </p>
             </motion.div>
           )}
         </CardContent>
       </Card>
-    </motion.section>
+    </section>
   )
 }
