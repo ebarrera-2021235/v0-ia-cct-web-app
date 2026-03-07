@@ -1,11 +1,20 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { AlertCircle, CheckCircle2, Info, Lightbulb, Layers, AlertTriangle, Shield, TrendingUp, Gauge, Settings } from "lucide-react"
+import { AlertCircle, CheckCircle2, Info, Lightbulb, Layers, AlertTriangle, Shield, TrendingUp, Gauge, Settings, FileCode, FolderTree, GitCommit, Clock } from "lucide-react"
 import type { AnalysisResult } from "./repository-analyzer"
+
+interface CodeCoverageData {
+  totalFiles: number
+  analyzedFiles: number
+  totalLines: number
+  analyzedLines: number
+  languages: { name: string; percentage: number; color: string }[]
+}
 
 interface AnalysisResultsProps {
   results: AnalysisResult
+  coverage?: CodeCoverageData
 }
 
 const containerVariants = {
@@ -76,7 +85,24 @@ function ScoreCircle({ score, label, icon: Icon, color }: { score: number; label
   )
 }
 
-export function AnalysisResults({ results }: AnalysisResultsProps) {
+export function AnalysisResults({ results, coverage }: AnalysisResultsProps) {
+  // Valores por defecto si no se pasa coverage
+  const defaultCoverage: CodeCoverageData = coverage || {
+    totalFiles: 127,
+    analyzedFiles: 124,
+    totalLines: 15420,
+    analyzedLines: 14890,
+    languages: [
+      { name: "TypeScript", percentage: 68, color: "#3178c6" },
+      { name: "JavaScript", percentage: 18, color: "#f7df1e" },
+      { name: "CSS", percentage: 8, color: "#264de4" },
+      { name: "JSON", percentage: 4, color: "#5d5d5d" },
+      { name: "Other", percentage: 2, color: "#6b7280" },
+    ]
+  }
+
+  const filesPercentage = Math.round((defaultCoverage.analyzedFiles / defaultCoverage.totalFiles) * 100)
+  const linesPercentage = Math.round((defaultCoverage.analyzedLines / defaultCoverage.totalLines) * 100)
   const getIssueStyles = (type: "error" | "warning" | "info") => {
     switch (type) {
       case "error":
@@ -117,6 +143,109 @@ export function AnalysisResults({ results }: AnalysisResultsProps) {
       initial="hidden"
       animate="visible"
     >
+      {/* Cobertura de Análisis */}
+      <motion.div 
+        variants={itemVariants}
+        className="rounded-2xl border border-orange-500/20 bg-card/50 p-6"
+      >
+        <div className="mb-5 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-500/20 ring-1 ring-orange-500/30">
+              <FileCode className="h-5 w-5 text-orange-500" />
+            </div>
+            <h4 className="text-lg font-bold text-foreground">
+              <span className="text-gradient">Cobertura</span> del Analisis
+            </h4>
+          </div>
+          <div className="flex items-center gap-2 rounded-lg bg-green-500/10 px-3 py-1.5 ring-1 ring-green-500/30">
+            <Clock className="h-4 w-4 text-green-500" />
+            <span className="text-sm font-medium text-green-500">Completado</span>
+          </div>
+        </div>
+
+        {/* Barras de progreso */}
+        <div className="mb-6 grid gap-4 sm:grid-cols-2">
+          <div className="rounded-xl border border-orange-500/10 bg-secondary/30 p-4">
+            <div className="mb-2 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <FolderTree className="h-4 w-4 text-orange-500" />
+                <span className="text-sm font-medium text-foreground">Archivos Analizados</span>
+              </div>
+              <span className="font-mono text-sm text-orange-500">{filesPercentage}%</span>
+            </div>
+            <div className="h-3 overflow-hidden rounded-full bg-secondary">
+              <motion.div
+                className="h-full rounded-full bg-gradient-to-r from-orange-500 to-orange-400"
+                initial={{ width: 0 }}
+                animate={{ width: `${filesPercentage}%` }}
+                transition={{ duration: 1.2, ease: "easeOut", delay: 0.3 }}
+              />
+            </div>
+            <div className="mt-2 flex justify-between text-xs text-muted-foreground">
+              <span>{defaultCoverage.analyzedFiles} de {defaultCoverage.totalFiles} archivos</span>
+              <span>{defaultCoverage.totalFiles - defaultCoverage.analyzedFiles} omitidos</span>
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-orange-500/10 bg-secondary/30 p-4">
+            <div className="mb-2 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <GitCommit className="h-4 w-4 text-blue-500" />
+                <span className="text-sm font-medium text-foreground">Lineas de Codigo</span>
+              </div>
+              <span className="font-mono text-sm text-blue-500">{linesPercentage}%</span>
+            </div>
+            <div className="h-3 overflow-hidden rounded-full bg-secondary">
+              <motion.div
+                className="h-full rounded-full bg-gradient-to-r from-blue-500 to-blue-400"
+                initial={{ width: 0 }}
+                animate={{ width: `${linesPercentage}%` }}
+                transition={{ duration: 1.2, ease: "easeOut", delay: 0.5 }}
+              />
+            </div>
+            <div className="mt-2 flex justify-between text-xs text-muted-foreground">
+              <span>{defaultCoverage.analyzedLines.toLocaleString()} de {defaultCoverage.totalLines.toLocaleString()} lineas</span>
+              <span>{(defaultCoverage.totalLines - defaultCoverage.analyzedLines).toLocaleString()} omitidas</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Distribución por lenguaje */}
+        <div>
+          <div className="mb-3 flex items-center justify-between">
+            <span className="text-sm font-medium text-foreground">Distribucion por Lenguaje</span>
+            <span className="text-xs text-muted-foreground">{defaultCoverage.languages.length} lenguajes detectados</span>
+          </div>
+          <div className="mb-3 flex h-4 overflow-hidden rounded-full">
+            {defaultCoverage.languages.map((lang, index) => (
+              <motion.div
+                key={lang.name}
+                className="h-full"
+                style={{ backgroundColor: lang.color }}
+                initial={{ width: 0 }}
+                animate={{ width: `${lang.percentage}%` }}
+                transition={{ duration: 0.8, delay: 0.7 + index * 0.1 }}
+              />
+            ))}
+          </div>
+          <div className="flex flex-wrap gap-3">
+            {defaultCoverage.languages.map((lang, index) => (
+              <motion.div 
+                key={lang.name}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1 + index * 0.1 }}
+                className="flex items-center gap-2"
+              >
+                <div className="h-3 w-3 rounded-full" style={{ backgroundColor: lang.color }} />
+                <span className="text-xs text-muted-foreground">{lang.name}</span>
+                <span className="font-mono text-xs text-foreground">{lang.percentage}%</span>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </motion.div>
+
       {/* Puntuaciones */}
       <motion.div 
         variants={itemVariants}
