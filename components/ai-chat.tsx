@@ -1,10 +1,11 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Bot, User, Send, Loader2, Sparkles } from "lucide-react"
+import { Bot, User, Send, Loader2, Sparkles, MessageSquare } from "lucide-react"
 
 interface Message {
   id: string
@@ -17,7 +18,7 @@ const INITIAL_MESSAGES: Message[] = [
     id: "welcome",
     role: "assistant",
     content:
-      "¡Hola! Soy el asistente de IA-CCT. Puedo ayudarte con dudas sobre programación, revisión de código, mejores prácticas y más. ¿En qué puedo ayudarte hoy?",
+      "¡Hola! Soy el asistente de DevScope AI. Puedo ayudarte con dudas sobre programación, revisión de código, mejores prácticas y más. ¿En qué puedo ayudarte hoy?",
   },
 ]
 
@@ -56,7 +57,6 @@ export function AIChat() {
     setInput("")
     setIsLoading(true)
 
-    // Simular respuesta de la IA
     await new Promise((resolve) => setTimeout(resolve, 1500))
 
     const aiResponse: Message = {
@@ -77,91 +77,136 @@ export function AIChat() {
   }
 
   return (
-    <section id="chat" className="scroll-mt-20">
-      <Card className="border-border bg-card">
-        <CardHeader>
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-              <Sparkles className="h-5 w-5 text-primary" />
-            </div>
+    <motion.section 
+      id="chatia" 
+      className="scroll-mt-24"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+    >
+      <Card className="overflow-hidden border-border bg-card/50 backdrop-blur-sm">
+        <CardHeader className="border-b border-border bg-card/80 pb-6">
+          <div className="flex items-center gap-4">
+            <motion.div 
+              className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 ring-1 ring-primary/20"
+              whileHover={{ scale: 1.05 }}
+            >
+              <MessageSquare className="h-6 w-6 text-primary" />
+            </motion.div>
             <div>
-              <CardTitle className="text-lg text-card-foreground">Chat con IA</CardTitle>
-              <CardDescription>
-                Pregúntale a la IA sobre programación, debugging, mejores prácticas y más
-              </CardDescription>
+              <CardTitle className="text-xl font-semibold text-card-foreground">
+                Chat con IA
+              </CardTitle>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Pregúntale a la IA sobre programación y mejores prácticas
+              </p>
             </div>
           </div>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-5 p-6">
           {/* Área de mensajes */}
-          <div className="h-[400px] overflow-y-auto rounded-lg border border-border bg-input p-4">
-            <div className="space-y-4">
-              {messages.map((message) => (
-                <div
-                  key={message.id}
-                  className={`flex gap-3 ${message.role === "user" ? "flex-row-reverse" : ""}`}
-                >
-                  <div
-                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${
-                      message.role === "user" ? "bg-secondary" : "bg-primary"
-                    }`}
+          <div className="h-[380px] overflow-y-auto rounded-xl border border-border bg-input/50 p-5">
+            <div className="space-y-5">
+              <AnimatePresence initial={false}>
+                {messages.map((message) => (
+                  <motion.div
+                    key={message.id}
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                    className={`flex gap-4 ${message.role === "user" ? "flex-row-reverse" : ""}`}
                   >
-                    {message.role === "user" ? (
-                      <User className="h-4 w-4 text-secondary-foreground" />
-                    ) : (
-                      <Bot className="h-4 w-4 text-primary-foreground" />
-                    )}
-                  </div>
-                  <div
-                    className={`max-w-[80%] rounded-lg px-4 py-2 ${
-                      message.role === "user"
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-secondary text-secondary-foreground"
-                    }`}
-                  >
-                    <p className="text-sm leading-relaxed">{message.content}</p>
-                  </div>
-                </div>
-              ))}
+                    <motion.div
+                      className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl shadow-lg ${
+                        message.role === "user" 
+                          ? "bg-secondary ring-1 ring-border" 
+                          : "bg-gradient-to-br from-primary to-primary/70 shadow-primary/20"
+                      }`}
+                      whileHover={{ scale: 1.1 }}
+                    >
+                      {message.role === "user" ? (
+                        <User className="h-5 w-5 text-secondary-foreground" />
+                      ) : (
+                        <Bot className="h-5 w-5 text-primary-foreground" />
+                      )}
+                    </motion.div>
+                    <div
+                      className={`max-w-[80%] rounded-2xl px-5 py-3 ${
+                        message.role === "user"
+                          ? "bg-gradient-to-br from-primary to-primary/80 text-primary-foreground shadow-lg shadow-primary/20"
+                          : "bg-secondary/80 text-secondary-foreground ring-1 ring-border"
+                      }`}
+                    >
+                      <p className="text-sm leading-relaxed">{message.content}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
               {isLoading && (
-                <div className="flex gap-3">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary">
-                    <Bot className="h-4 w-4 text-primary-foreground" />
+                <motion.div 
+                  className="flex gap-4"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                >
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/70 shadow-lg shadow-primary/20">
+                    <Bot className="h-5 w-5 text-primary-foreground" />
                   </div>
-                  <div className="flex items-center gap-2 rounded-lg bg-secondary px-4 py-2">
-                    <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                  <div className="flex items-center gap-3 rounded-2xl bg-secondary/80 px-5 py-3 ring-1 ring-border">
+                    <Loader2 className="h-4 w-4 animate-spin text-primary" />
                     <span className="text-sm text-muted-foreground">Escribiendo...</span>
+                    <motion.div 
+                      className="flex gap-1"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                    >
+                      {[0, 1, 2].map((i) => (
+                        <motion.span
+                          key={i}
+                          className="h-1.5 w-1.5 rounded-full bg-primary"
+                          animate={{ scale: [1, 1.3, 1] }}
+                          transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.2 }}
+                        />
+                      ))}
+                    </motion.div>
                   </div>
-                </div>
+                </motion.div>
               )}
               <div ref={messagesEndRef} />
             </div>
           </div>
 
           {/* Campo de entrada */}
-          <div className="flex gap-2">
+          <div className="flex gap-3">
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder="Escribe tu pregunta sobre código..."
-              className="flex-1 bg-input text-foreground placeholder:text-muted-foreground"
+              className="h-12 flex-1 bg-input text-base text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/40"
               disabled={isLoading}
             />
-            <Button onClick={handleSend} disabled={isLoading || !input.trim()} size="icon">
-              {isLoading ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <Send className="h-4 w-4" />
-              )}
-            </Button>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button 
+                onClick={handleSend} 
+                disabled={isLoading || !input.trim()} 
+                size="icon" 
+                className="h-12 w-12 bg-gradient-to-r from-primary to-primary/80 shadow-lg shadow-primary/25 hover:shadow-primary/40"
+              >
+                {isLoading ? (
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                ) : (
+                  <Send className="h-5 w-5" />
+                )}
+              </Button>
+            </motion.div>
           </div>
 
           <p className="text-center text-xs text-muted-foreground">
-            La IA puede cometer errores. Verifica siempre la información importante.
+            DevScope AI puede cometer errores. Verifica siempre la información importante.
           </p>
         </CardContent>
       </Card>
-    </section>
+    </motion.section>
   )
 }

@@ -7,7 +7,7 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'IA-CCT - Analiza y mejora tu código con IA',
+  title: 'DevScope AI - Analiza y mejora tu código con IA',
   description: 'Herramienta de análisis de código con Inteligencia Artificial para desarrolladores',
   generator: 'v0.app',
   icons: {

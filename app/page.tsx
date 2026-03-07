@@ -1,66 +1,110 @@
+"use client"
+
+import { motion } from "framer-motion"
 import { Header } from "@/components/header"
-import { RepoAnalyzer } from "@/components/repo-analyzer"
+import { RepositoryAnalyzer } from "@/components/repository-analyzer"
 import { CodeDebugger } from "@/components/code-debugger"
 import { AIChat } from "@/components/ai-chat"
-import { Bot, Zap, Shield, Code2 } from "lucide-react"
+import { Telescope, Zap, Shield, Code2 } from "lucide-react"
+
+const features = [
+  {
+    icon: Zap,
+    title: "Análisis Rápido",
+    description: "Obtén resultados en segundos con nuestro motor de análisis optimizado",
+  },
+  {
+    icon: Shield,
+    title: "Detección de Errores",
+    description: "Identifica vulnerabilidades y bugs antes de que lleguen a producción",
+  },
+  {
+    icon: Code2,
+    title: "Código Corregido",
+    description: "Recibe sugerencias de código corregido listo para usar",
+  },
+]
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       <Header />
       
-      <main className="mx-auto max-w-7xl px-4 py-8">
+      <main className="mx-auto max-w-7xl px-6 py-12">
         {/* Hero Section */}
-        <section className="mb-12 text-center">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5">
-            <Bot className="h-4 w-4 text-primary" />
+        <motion.section 
+          className="mb-16 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
+          <motion.div 
+            className="mb-8 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-5 py-2"
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            <Telescope className="h-5 w-5 text-primary" />
             <span className="text-sm font-medium text-primary">Potenciado por IA</span>
-          </div>
-          <h2 className="mb-4 text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+          </motion.div>
+          
+          <motion.h2 
+            className="mb-6 text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+          >
             Analiza y mejora tu código con
-            <span className="text-primary"> Inteligencia Artificial</span>
-          </h2>
-          <p className="mx-auto max-w-2xl text-pretty text-muted-foreground sm:text-lg">
-            IA-CCT te ayuda a detectar errores, analizar repositorios de GitHub y obtener 
+            <span className="block bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+              Inteligencia Artificial
+            </span>
+          </motion.h2>
+          
+          <motion.p 
+            className="mx-auto max-w-2xl text-pretty text-lg text-muted-foreground"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+          >
+            DevScope AI te ayuda a detectar errores, analizar repositorios de GitHub y obtener 
             sugerencias inteligentes para mejorar la calidad de tu código.
-          </p>
+          </motion.p>
 
           {/* Features */}
-          <div className="mt-10 grid gap-6 sm:grid-cols-3">
-            <div className="rounded-lg border border-border bg-card p-6 transition-colors hover:border-primary/50">
-              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                <Zap className="h-6 w-6 text-primary" />
-              </div>
-              <h3 className="mb-2 font-semibold text-card-foreground">Análisis Rápido</h3>
-              <p className="text-sm text-muted-foreground">
-                Obtén resultados en segundos con nuestro motor de análisis optimizado
-              </p>
-            </div>
-            <div className="rounded-lg border border-border bg-card p-6 transition-colors hover:border-primary/50">
-              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                <Shield className="h-6 w-6 text-primary" />
-              </div>
-              <h3 className="mb-2 font-semibold text-card-foreground">Detección de Errores</h3>
-              <p className="text-sm text-muted-foreground">
-                Identifica vulnerabilidades y bugs antes de que lleguen a producción
-              </p>
-            </div>
-            <div className="rounded-lg border border-border bg-card p-6 transition-colors hover:border-primary/50">
-              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                <Code2 className="h-6 w-6 text-primary" />
-              </div>
-              <h3 className="mb-2 font-semibold text-card-foreground">Código Corregido</h3>
-              <p className="text-sm text-muted-foreground">
-                Recibe sugerencias de código corregido listo para usar
-              </p>
-            </div>
-          </div>
-        </section>
+          <motion.div 
+            className="mt-14 grid gap-6 sm:grid-cols-3"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.6 }}
+          >
+            {features.map((feature, index) => (
+              <motion.div 
+                key={feature.title}
+                className="group rounded-2xl border border-border bg-card/50 p-8 backdrop-blur-sm transition-all duration-300 hover:border-primary/50 hover:bg-card/80"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 + index * 0.1 }}
+                whileHover={{ y: -5 }}
+              >
+                <motion.div 
+                  className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 ring-1 ring-primary/20 transition-all group-hover:shadow-lg group-hover:shadow-primary/20"
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                >
+                  <feature.icon className="h-7 w-7 text-primary" />
+                </motion.div>
+                <h3 className="mb-3 text-lg font-semibold text-card-foreground">{feature.title}</h3>
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  {feature.description}
+                </p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </motion.section>
 
         {/* Main Tools */}
-        <div className="grid gap-8 lg:grid-cols-2">
+        <div className="grid gap-8 xl:grid-cols-2">
           <div className="space-y-8">
-            <RepoAnalyzer />
+            <RepositoryAnalyzer />
             <AIChat />
           </div>
           <div>
@@ -69,20 +113,31 @@ export default function Home() {
         </div>
 
         {/* Footer */}
-        <footer className="mt-16 border-t border-border pt-8 text-center">
-          <div className="flex items-center justify-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-              <Bot className="h-4 w-4 text-primary-foreground" />
+        <motion.footer 
+          className="mt-20 border-t border-border pt-10 text-center"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <motion.div 
+            className="flex items-center justify-center gap-3"
+            whileHover={{ scale: 1.05 }}
+          >
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/70 shadow-lg shadow-primary/20">
+              <Telescope className="h-5 w-5 text-primary-foreground" />
             </div>
-            <span className="font-semibold text-foreground">IA-CCT</span>
-          </div>
-          <p className="mt-4 text-sm text-muted-foreground">
+            <span className="text-xl font-bold text-foreground">
+              DevScope <span className="text-primary">AI</span>
+            </span>
+          </motion.div>
+          <p className="mt-5 text-sm text-muted-foreground">
             Herramienta de análisis de código con Inteligencia Artificial para desarrolladores
           </p>
-          <p className="mt-2 text-xs text-muted-foreground">
-            © 2026 IA-CCT. Todos los derechos reservados.
+          <p className="mt-3 text-xs text-muted-foreground/70">
+            © 2026 DevScope AI. Todos los derechos reservados.
           </p>
-        </footer>
+        </motion.footer>
       </main>
     </div>
   )
