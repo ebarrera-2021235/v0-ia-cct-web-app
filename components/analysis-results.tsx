@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { AlertCircle, CheckCircle2, Info, Lightbulb, Layers, AlertTriangle } from "lucide-react"
+import { AlertCircle, CheckCircle2, Info, Lightbulb, Layers, AlertTriangle, Shield, TrendingUp, Gauge, Settings } from "lucide-react"
 import type { AnalysisResult } from "./repository-analyzer"
 
 interface AnalysisResultsProps {
@@ -23,6 +23,57 @@ const itemVariants = {
     y: 0, 
     transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] } 
   },
+}
+
+function ScoreCircle({ score, label, icon: Icon, color }: { score: number; label: string; icon: React.ComponentType<{ className?: string }>; color: string }) {
+  const circumference = 2 * Math.PI * 36
+  const strokeDashoffset = circumference - (score / 100) * circumference
+
+  const getScoreColor = (score: number) => {
+    if (score >= 80) return "text-green-500"
+    if (score >= 60) return "text-yellow-500"
+    return "text-red-500"
+  }
+
+  return (
+    <motion.div 
+      className="flex flex-col items-center gap-2"
+      whileHover={{ scale: 1.05, y: -4 }}
+    >
+      <div className="relative">
+        <svg className="h-24 w-24 -rotate-90 transform">
+          <circle
+            cx="48"
+            cy="48"
+            r="36"
+            stroke="currentColor"
+            strokeWidth="6"
+            fill="transparent"
+            className="text-secondary"
+          />
+          <motion.circle
+            cx="48"
+            cy="48"
+            r="36"
+            stroke="currentColor"
+            strokeWidth="6"
+            fill="transparent"
+            strokeLinecap="round"
+            className={color}
+            initial={{ strokeDashoffset: circumference }}
+            animate={{ strokeDashoffset }}
+            transition={{ duration: 1.5, ease: "easeOut", delay: 0.5 }}
+            style={{ strokeDasharray: circumference }}
+          />
+        </svg>
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <Icon className={`h-5 w-5 ${color}`} />
+          <span className={`text-lg font-bold ${getScoreColor(score)}`}>{score}</span>
+        </div>
+      </div>
+      <span className="text-xs text-muted-foreground">{label}</span>
+    </motion.div>
+  )
 }
 
 export function AnalysisResults({ results }: AnalysisResultsProps) {
@@ -55,6 +106,10 @@ export function AnalysisResults({ results }: AnalysisResultsProps) {
     }
   }
 
+  const overallScore = Math.round(
+    (results.codeQuality + results.securityScore + results.performanceScore + results.maintainabilityScore) / 4
+  )
+
   return (
     <motion.div
       className="space-y-6"
@@ -62,6 +117,55 @@ export function AnalysisResults({ results }: AnalysisResultsProps) {
       initial="hidden"
       animate="visible"
     >
+      {/* Puntuaciones */}
+      <motion.div 
+        variants={itemVariants}
+        className="rounded-2xl border border-orange-500/20 bg-gradient-to-br from-orange-500/10 to-transparent p-6"
+      >
+        <div className="mb-6 flex items-center justify-between">
+          <h4 className="text-lg font-bold text-foreground">
+            <span className="text-gradient">Puntuaciones</span> del Proyecto
+          </h4>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">Score general:</span>
+            <motion.span 
+              className={`text-2xl font-bold ${overallScore >= 80 ? "text-green-500" : overallScore >= 60 ? "text-yellow-500" : "text-red-500"}`}
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", stiffness: 200, delay: 0.3 }}
+            >
+              {overallScore}
+            </motion.span>
+          </div>
+        </div>
+        <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
+          <ScoreCircle 
+            score={results.codeQuality} 
+            label="Calidad de Codigo" 
+            icon={TrendingUp}
+            color="text-blue-500"
+          />
+          <ScoreCircle 
+            score={results.securityScore} 
+            label="Seguridad" 
+            icon={Shield}
+            color="text-green-500"
+          />
+          <ScoreCircle 
+            score={results.performanceScore} 
+            label="Rendimiento" 
+            icon={Gauge}
+            color="text-purple-500"
+          />
+          <ScoreCircle 
+            score={results.maintainabilityScore} 
+            label="Mantenibilidad" 
+            icon={Settings}
+            color="text-orange-500"
+          />
+        </div>
+      </motion.div>
+
       {/* Resumen */}
       <motion.div 
         variants={itemVariants}
@@ -162,6 +266,7 @@ export function AnalysisResults({ results }: AnalysisResultsProps) {
             <Lightbulb className="h-5 w-5 text-amber-500" />
           </div>
           <h4 className="text-lg font-bold text-foreground">Recomendaciones</h4>
+          <span className="ml-auto font-mono text-sm text-orange-500/50">{results.recommendations.length} tips</span>
         </div>
         <ul className="space-y-3">
           {results.recommendations.map((rec, index) => (
